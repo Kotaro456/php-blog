@@ -1,3 +1,8 @@
+<?php
+    require('dbconnect.php');
+
+    $posts = $db->query('SELECT * FROM posts');
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -30,50 +35,15 @@
 
         <!-- 記事一覧 -->
         <div class="contents">
-            <div class="content">
-                <h2>Title</h2>
-                <p>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                </p>
-            </div>
 
+        <?php foreach($posts as $post): ?>
             <div class="content">
-                <h2>Title</h2>
+                <h2><?php echo $post['title']; ?></h2>
                 <p>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
+                   <?php echo $post['content']; ?>
                 </p>
             </div>
-
-            <div class="content">
-                <h2>Title</h2>
-                <p>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                </p>
-            </div>
-
-            <div class="content">
-                <h2>Title</h2>
-                <p>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                </p>
-            </div>
-
-            <div class="content">
-                <h2>Title</h2>
-                <p>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                    blogcontentblogcontentblogcontentblogcontentblogcontentblogcontent<br>
-                </p>
-            </div>
+        <?php endforeach; ?>
 
             <!-- ページング -->
             <div class="pages">

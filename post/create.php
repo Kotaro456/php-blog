@@ -15,9 +15,6 @@
         $title = htmlspecialchars($_POST['title'], ENT_QUOTES);
         $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
 
-    
-
-            
             // SQL文を直書きはまずいので、サニタイズ
             $sth = $db->prepare('INSERT INTO posts (title, content, created) values (?, ?, now())');
             $sth->execute(array($title, $content));
