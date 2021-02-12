@@ -33,16 +33,23 @@
             <p>僕はこういうやつです</p>
         </div>
 
+        <p><a href="post/create.php">記事作成</a></p>
+
         <!-- 記事一覧 -->
         <div class="contents">
 
         <?php foreach($posts as $post): ?>
+            <hr>
             <div class="content">
                 <h2><?php echo $post['title']; ?></h2>
                 <p>
                    <?php echo $post['content']; ?>
                 </p>
+                <p>作成日時：<?php echo $post['created']; ?></p>
+                <button><a href="post/edit.php">編集</a></button>
+                <button><a href="post/delete.php">削除</a></button>
             </div>
+            <hr>
         <?php endforeach; ?>
 
             <!-- ページング -->

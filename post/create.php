@@ -44,7 +44,7 @@
         </div>
 
         <div class="header-nav">
-            <p><a href="#">記事一覧へ</a></p>
+            <p><a href="../index.php">記事一覧へ</a></p>
             <p><a href="#">ログアウト</a></p>
         </div>
     
