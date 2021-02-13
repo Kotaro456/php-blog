@@ -33,7 +33,7 @@
             <p>僕はこういうやつです</p>
         </div>
 
-        <p><a href="post/create.php">記事作成</a></p>
+        <p><a href="create.php">記事作成</a></p>
 
         <!-- 記事一覧 -->
         <div class="contents">
@@ -49,7 +49,7 @@
 
                 <!--                URLパラメーターでDBからデータ取得するためのidを入れる -->
                 <button><a href="post/edit.php?id=<?php echo $post['id']; ?>">編集</a></button>
-                <button><a href="post/delete.php">削除</a></button>
+                <button><a href="post/delete.php?id=<?php echo $post['id']; ?>">削除</a></button>
             </div>
             <hr>
         <?php endforeach; ?>
