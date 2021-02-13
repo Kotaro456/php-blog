@@ -1,13 +1,31 @@
+<?php
+require('../dbconnect.php');
+
+// 編集前
+// index.phpからのURLパラメータの値を取得
+$id = $_REQUEST['id'];
+
+// DBからURLパラメータと一致するレコードを取得
+$statement = $db->prepare('SELECT * FROM posts WHERE id=?');
+$statement->execute(array($id));
+
+$post = $statement->fetch();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>記事編集</title>
 </head>
+
 <body>
-<header>
+    <header>
         <div class="header-title">
             <h1>PHP Blog</h1>
             <h2>PHPで作ったBlog</h2>
@@ -17,15 +35,16 @@
             <p><a href="#">記事一覧へ</a></p>
             <p><a href="#">ログアウト</a></p>
         </div>
-    
+
     </header>
     <div class="main">
         <h1>記事作成</h1>
-        <form action="#" method="post">
-            <input type="text" name="title" placeholder="記事のタイトル" value="既存のタイトル"/>
+        <form action="update.php" method="post">
+            <input type="text" name="new_title" placeholder="記事のタイトル" value="<?php echo $post['title']; ?>" />
 
-            <textarea type="text" name="content" placeholder="記事の内容">既存の内容</textarea>
+            <textarea type="text" name="new_content" placeholder="記事の内容"><?php echo $post['content']; ?></textarea>
 
+            <input type="hidden" name="id" value="<?php echo $post['id']; ?>" />
             <input type="submit" value="記事を編集して投稿" />
 
         </form>
@@ -35,4 +54,5 @@
         <p>〇〇のブログ</p>
     </footer>
 </body>
+
 </html>

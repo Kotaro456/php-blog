@@ -46,7 +46,9 @@
                    <?php echo $post['content']; ?>
                 </p>
                 <p>作成日時：<?php echo $post['created']; ?></p>
-                <button><a href="post/edit.php">編集</a></button>
+
+                <!--                URLパラメーターでDBからデータ取得するためのidを入れる -->
+                <button><a href="post/edit.php?id=<?php echo $post['id']; ?>">編集</a></button>
                 <button><a href="post/delete.php">削除</a></button>
             </div>
             <hr>
