@@ -1,5 +1,5 @@
 <?php
-    require('dbconnect.php');
+    require('../dbconnect.php');
 
     $posts = $db->query('SELECT * FROM posts');
 ?>
@@ -48,8 +48,8 @@
                 <p>作成日時：<?php echo $post['created']; ?></p>
 
                 <!--                URLパラメーターでDBからデータ取得するためのidを入れる -->
-                <button><a href="post/edit.php?id=<?php echo $post['id']; ?>">編集</a></button>
-                <button><a href="post/delete.php?id=<?php echo $post['id']; ?>">削除</a></button>
+                <button><a href="edit.php?id=<?php echo $post['id']; ?>">編集</a></button>
+                <button><a href="delete.php?id=<?php echo $post['id']; ?>">削除</a></button>
             </div>
             <hr>
         <?php endforeach; ?>

@@ -10,5 +10,5 @@
     $delete = $db->prepare('DELETE from posts WHERE id=?');
     $delete->execute(array($id));
 
-    header('Location: ../index.php');
+    header('Location: /index.php');
 ?>

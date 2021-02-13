@@ -20,7 +20,7 @@
             $sth->execute(array($title, $content));
 
 
-            header('Location:/php-blog/index.php/');
+            header('Location:index.php');
             
 
     }else{
@@ -44,7 +44,7 @@
         </div>
 
         <div class="header-nav">
-            <p><a href="../index.php">記事一覧へ</a></p>
+            <p><a href="index.php">記事一覧へ</a></p>
             <p><a href="#">ログアウト</a></p>
         </div>
     

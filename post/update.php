@@ -10,7 +10,7 @@
     $new_post = $db->prepare('UPDATE posts SET title=?, content=?, modified=now() WHERE id=?');
     $new_post->execute(array($new_title, $new_content, $update_id));
 
-    header('Location: /php-blog/index.php/');
+    header('Location: /index.php/');
 
 
 ?>
