@@ -25,18 +25,7 @@ $post = $statement->fetch();
 </head>
 
 <body>
-    <header>
-        <div class="header-title">
-            <h1>PHP Blog</h1>
-            <h2>PHPで作ったBlog</h2>
-        </div>
-
-        <div class="header-nav">
-            <p><a href="#">記事一覧へ</a></p>
-            <p><a href="#">ログアウト</a></p>
-        </div>
-
-    </header>
+    <?php include('../layouts/header.html') ?>
     <div class="main">
         <h1>記事作成</h1>
         <form action="update.php" method="post">

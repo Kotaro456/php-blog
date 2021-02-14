@@ -12,19 +12,8 @@
     <title>投稿一覧</title>
 </head>
 <body>
-    <header>
-        <div class="header-title">
-            <h1>PHP Blog</h1>
-            <h2>PHPで作ったBlog</h2>
-        </div>
+        <?php include('../layouts/header.html') ?>
 
-        <div class="header-nav">
-            <p><a href="#">新規登録</a></p>
-            <p><a href="#">ログイン</a></p>
-            <p><a href="#">ログアウト</a></p>
-        </div>
-    
-    </header>
     <div class="main">
 
         <div class="bloger-profile">
@@ -64,8 +53,6 @@
         </div>
     </div>
 
-    <footer>
-        <p>〇〇のブログ</p>
-    </footer>
+    <?php include('../layouts/footer.html'); ?>
 </body>
 </html>

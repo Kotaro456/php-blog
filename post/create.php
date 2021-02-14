@@ -37,18 +37,8 @@
     <title>記事作成</title>
 </head>
 <body>
-<header>
-        <div class="header-title">
-            <h1>PHP Blog</h1>
-            <h2>PHPで作ったBlog</h2>
-        </div>
+    <?php include('../layouts/header.html') ?>
 
-        <div class="header-nav">
-            <p><a href="index.php">記事一覧へ</a></p>
-            <p><a href="#">ログアウト</a></p>
-        </div>
-    
-    </header>
     <div class="main">
         <h1>記事作成</h1>
 
