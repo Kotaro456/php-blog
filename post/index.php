@@ -1,7 +1,31 @@
 <?php
     require('../dbconnect.php');
 
-    $posts = $db->query('SELECT * FROM posts');
+    // ページング
+
+    if(isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) {
+
+        // 前へ次へのリンクのURLパラメータのpageの値を取得する
+        $page = $_REQUEST['page'];
+    } else {
+        // URLパラメータに値がないときは、デフォで1
+        $page = 1;
+    }
+    // これで1ページ目は0スタート、2ページ目はDBの5番目のデータからスタート
+    $start = 5 * ($page - 1);
+    // サニタイズしてページ事に持ってくるデータを選択する
+    $posts = $db->prepare('SELECT * FROM posts ORDER BY id LIMIT ?, 5');
+    $posts->bindParam(1, $start, PDO::PARAM_INT);
+    $posts->execute();
+
+    // 最大ページを取得する
+    $datas = $db->query('SELECT COUNT(*) AS cnt FROM posts');
+    $data = $datas->fetch();
+    // 商を切り上げ
+    $maxPage = ceil($data['cnt'] / 5);
+    
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -46,8 +70,20 @@
             <!-- ページング -->
             <div class="pages">
                 <ul>
-                    <li><a href="#">前のページへ</a></li>
-                    <li><a href="#">次のページへ</a></li>
+                    <!-- 前のページがないならリンクは無しで表示する -->
+                    <?php if($page == 1): ?>
+                        <li>前のページへ</li>
+                    <?php else: ?>
+                        <li><a href="index.php?page=<?php echo $page - 1; ?>">前のページへ</a></li>
+                    <?php endif; ?>
+
+
+
+                    <?php if($page == $maxPage): ?>
+                        <li>次のページへ</li>
+                    <?php else: ?>
+                        <li><a href="index.php?page=<?php echo $page + 1; ?>">次のページへ</a></li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </div>
