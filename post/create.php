@@ -16,11 +16,14 @@ if (!empty($_POST)) {
     $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
 
     // バリデーション
-    if (strlen($title) < 4) {
+
+    // strlen()だと全角文字は 1文字2文字としてカウントされる
+    // バイト数によってカウントされるため
+    if (mb_strlen($title) < 4) {
         $errorTitle = 'タイトルは4文字以上で入力してください';
     }
 
-    if (strlen($content) < 10) {
+    if (mb_strlen($content) < 10) {
         $errorContent = '記事内容は10文字以上で入力してください';
     }
 
