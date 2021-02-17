@@ -26,6 +26,11 @@ if (!empty($_POST)) {
     $new_title = htmlspecialchars($_POST['new_title']);
     $new_content = htmlspecialchars($_POST['new_content']);
 
+        // これで前後の空白を削除しておく
+    // 正規表現により文字列の前後の空白を削除することができる
+    $new_title = preg_replace( '/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $new_title);
+
+
     // 文字数チェック 条件を満たしていたらエラー文の変数を空にする
 
     // mb_strlen()じゃないと日本語のバリデーションがうまくいきませんぞ

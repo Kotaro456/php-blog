@@ -15,6 +15,12 @@ if (!empty($_POST)) {
     $title = htmlspecialchars($_POST['title'], ENT_QUOTES);
     $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
 
+
+    // これで前後の空白を削除しておく
+    // 正規表現により文字列の前後の空白を削除することができる
+    $title = preg_replace( '/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $title);
+
+
     // バリデーション
 
     // strlen()だと全角文字は 1文字2文字としてカウントされる
