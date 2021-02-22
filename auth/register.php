@@ -1,3 +1,60 @@
+<?php
+    // DB接続
+    require('../dbconnect.php');
+
+    // 入力されているかどうかのチェック
+    if (!empty($_POST)) {
+
+        // 入力フォームの値を取得
+        $name = htmlspecialchars($_POST['name']);
+        $email = htmlspecialchars($_POST['email']);
+        $password = htmlspecialchars($_POST['password']);
+
+        $errorName = '';
+        $errorEmail = '';
+        $errorPassword = '';
+
+
+        // 名前が入力されているかのチェック
+        if (mb_strlen($name) == 0) {
+            $errorName = '名前を入力してください';
+        }
+
+        // メアドのための正規表現
+        $email_pattern = '/^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/u';
+
+        // emailがメールの書式で入力されているかの確認、マッチしなかったらエラー文
+        if (!preg_match($email_pattern, $email)) {
+            $errorEmail = '正しいメールアドレスを入力してください';
+        }
+
+        
+        // パスワードの文字数チェック
+        if (strlen($password) <= 3) {
+            $errorPassword = 'パスワードは4文字以上で入力してください';
+        }
+
+
+        // エラーがなかったら、DBに入れる
+        if ($errorName == '' && $errorEmail == '' && $errorPassword == '') {
+
+            // パスワードをDBに保存する前に暗号化かます
+            $hash_password = password_hash($password, PASSWORD_DEFAULT);
+
+            // サニタイズして入れる
+            $statement = $db->prepare('INSERT INTO users (name, email, password, created) values (?, ?, ?, now())');
+            $statement->execute(array($name, $email, $hash_password));
+
+            header('Location: ../post/index.php');
+        }
+
+    } else {
+        echo '全て入力してください';
+    }
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -20,14 +77,16 @@
     <div class="main">
 
         <!-- 登録フォーム -->
-        <form action="#" method="post">
-            <input type="text" name="name" placeholder="名前" />
+        <form action="register.php" method="post">
 
-            <input type="email" name="email" placeholder="メアド" />
+            <?php $errorName ? print("<p>$errorName</p>") : '';?>
+            <input type="text" name="name" placeholder="名前" /><br><br>
 
-            <input type="password" name="password" placeholder="パスワード" />
+            <?php $errorEmail ? print("<p>$errorEmail</p>") : '';?>
+            <input type="email" name="email" placeholder="メアド" /><br><br>
 
-            <input type="password" name="check_password" placeholder="パスワード確認" />
+            <?php $errorPassword ? print("<p>$errorPassword</p>") : '';?>
+            <input type="password" name="password" placeholder="パスワード" /><br><br>
 
             <input type="submit" value="登録する" />
 
