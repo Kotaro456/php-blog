@@ -1,28 +1,42 @@
 <?php
     require('../dbconnect.php');
 
-    // ページング
+    // セッション開始
+    session_start();
 
-    if(isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) {
+    // セッションの値がnull出ないことを確かめる
+    if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
 
-        // 前へ次へのリンクのURLパラメータのpageの値を取得する
-        $page = $_REQUEST['page'];
+        $login_user = $_SESSION['name'];
+
+        // ページング
+        if(isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) {
+    
+            // 前へ次へのリンクのURLパラメータのpageの値を取得する
+            $page = $_REQUEST['page'];
+        } else {
+            // URLパラメータに値がないときは、デフォで1
+            $page = 1;
+        }
+        // これで1ページ目は0スタート、2ページ目はDBの5番目のデータからスタート
+        $start = 5 * ($page - 1);
+        // サニタイズしてページ事に持ってくるデータを選択する
+        $posts = $db->prepare('SELECT * FROM posts ORDER BY id LIMIT ?, 5');
+        $posts->bindParam(1, $start, PDO::PARAM_INT);
+        $posts->execute();
+    
+        // 最大ページを取得する
+        $datas = $db->query('SELECT COUNT(*) AS cnt FROM posts');
+        $data = $datas->fetch();
+        // 商を切り上げ
+        $maxPage = ceil($data['cnt'] / 5);
+
+
+        // セッションの値を持っていないなら(ログインできていないなら)
     } else {
-        // URLパラメータに値がないときは、デフォで1
-        $page = 1;
+        header('Location: ../auth/login.php');
     }
-    // これで1ページ目は0スタート、2ページ目はDBの5番目のデータからスタート
-    $start = 5 * ($page - 1);
-    // サニタイズしてページ事に持ってくるデータを選択する
-    $posts = $db->prepare('SELECT * FROM posts ORDER BY id LIMIT ?, 5');
-    $posts->bindParam(1, $start, PDO::PARAM_INT);
-    $posts->execute();
 
-    // 最大ページを取得する
-    $datas = $db->query('SELECT COUNT(*) AS cnt FROM posts');
-    $data = $datas->fetch();
-    // 商を切り上げ
-    $maxPage = ceil($data['cnt'] / 5);
     
 
 
@@ -40,9 +54,11 @@
 
     <div class="main">
 
+        
+
         <div class="bloger-profile">
             <h1>画像</h1>
-            <h2>ブロガーの名前</h2>
+            <h2><?php echo $login_user; ?>さん</h2>
             <p>僕はこういうやつです</p>
         </div>
 

@@ -2,6 +2,9 @@
     // DB接続
     require('../dbconnect.php');
 
+    // セッションの開始
+    session_start();
+
     // 入力されているかどうかのチェック
     if (!empty($_POST)) {
 
@@ -44,6 +47,14 @@
             // サニタイズして入れる
             $statement = $db->prepare('INSERT INTO users (name, email, password, created) values (?, ?, ?, now())');
             $statement->execute(array($name, $email, $hash_password));
+
+            $login = $db->prepare('SELECT id, name FROM users WHERE email=?');
+            $login->execute(array($email));
+            $user = $login->fetch();
+
+            // セッションに登録されたユーザーの値を取得する
+            $_SESSION['id'] = $user['id'];
+            $_SESSION['name'] = $user['name'];
 
             header('Location: ../post/index.php');
         }
