@@ -2,6 +2,13 @@
 <?php 
     require('../dbconnect.php');
 
+    session_start();
+
+    if (!isset($_SESSION['id']) && !isset($_SESSION['name'])) {
+        header('Location: ../auth/login.php');
+    }
+
+
     // URLパラメーターからのidを取得
     $id = $_REQUEST['id'];
 

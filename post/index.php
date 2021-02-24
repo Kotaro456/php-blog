@@ -4,8 +4,11 @@
     // セッション開始
     session_start();
 
-    // セッションの値がnull出ないことを確かめる
-    if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
+        if (!isset($_SESSION['id']) && !isset($_SESSION['name'])) {
+            header('Location: ../auth/login.php');
+        }
+
+   
 
         $login_user = $_SESSION['name'];
 
@@ -32,10 +35,7 @@
         $maxPage = ceil($data['cnt'] / 5);
 
 
-        // セッションの値を持っていないなら(ログインできていないなら)
-    } else {
-        header('Location: ../auth/login.php');
-    }
+   
 
     
 

@@ -2,6 +2,14 @@
 // DB接続
 require('../dbconnect.php');
 
+session_start();
+
+if (!isset($_SESSION['id']) && !isset($_SESSION['name'])) {
+    header('Location: ../auth/login.php');
+}
+
+
+
 
 // $_POSTが空っぽじゃない時にDBに保存するまでの操作を開始する
 if (!empty($_POST)) {
