@@ -7,11 +7,13 @@
 
     // 入力されているかどうかのチェック
     if (!empty($_POST)) {
+        
 
         // 入力フォームの値を取得
         $name = htmlspecialchars($_POST['name']);
         $email = htmlspecialchars($_POST['email']);
         $password = htmlspecialchars($_POST['password']);
+
 
         $errorName = '';
         $errorEmail = '';
@@ -37,6 +39,25 @@
             $errorPassword = 'パスワードは4文字以上で入力してください';
         }
 
+        // 画像ファイルのDBに入れる直前までの処理
+
+        // 写真がアップロードされていたら
+        if (!empty($_FILES['picture']['name'])) {
+
+            // 画像ファイルの名前は$_FILESのnameキーのところに入っているファイル名を取得して
+            // それに年月日時をくっつけて、画像のファイル名を被らない様にする(ほぼほぼ被らない)
+            $image = date('YmsHis') . $_FILES['picture']['name'];
+    
+            // これをファイルディレクトリの中に格納している時用のパスを書く(DBでは文字列として保存)
+            // ファイルではimgタグ様に使える
+            $file = "images/$image";
+
+        } else {
+            // デフォルトの画像を保存
+            $file = "images/default.png";
+        }
+
+
 
         // エラーがなかったら、DBに入れる
         if ($errorName == '' && $errorEmail == '' && $errorPassword == '') {
@@ -45,14 +66,22 @@
             $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
             // サニタイズして入れる
-            $statement = $db->prepare('INSERT INTO users (name, email, password, created) values (?, ?, ?, now())');
-            $statement->execute(array($name, $email, $hash_password));
+            $statement = $db->prepare('INSERT INTO users SET name=?, email=?, password=?, picture=?, created=now())');
+            $statement->execute(array($name, $email, $hash_password, $file));
 
+            if (!empty($_FILES['picture']['name'])) {
+                // 画像ファイルをimagesディレクトリに移動
+                move_uploaded_file($_FILES['picture']['tmp_name'], '../images/', $image);
+            }
+
+
+
+            // ログイン処理
             $login = $db->prepare('SELECT id, name FROM users WHERE email=?');
             $login->execute(array($email));
             $user = $login->fetch();
 
-            // セッションに登録されたユーザーの値を取得する
+            // セッションに登録されたユーザーの値を取得する、つまりログイン
             $_SESSION['id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
 
@@ -87,8 +116,8 @@
 
     <div class="main">
 
-        <!-- 登録フォーム -->
-        <form action="register.php" method="post">
+        <!-- 登録フォーム  -->                          <!-- 画像をアップするため -->
+        <form action="register.php" method="post" enctype="multipart/form-data">
 
             <?php $errorName ? print("<p>$errorName</p>") : '';?>
             <input type="text" name="name" placeholder="名前" /><br><br>
@@ -98,6 +127,11 @@
 
             <?php $errorPassword ? print("<p>$errorPassword</p>") : '';?>
             <input type="password" name="password" placeholder="パスワード" /><br><br>
+
+            <!-- 画像ファイルを入れるための場所、required を書くと入力必須になる、
+                    acceptで拡張子を指定する、指定された拡張子の物しか選択できなくなる、
+                    これでアップされたファイルデータはスーパーグローバル変数の$_FILESに入る -->
+            <input type="file" name="picture" accept=".png, .jpg" />
 
             <input type="submit" value="登録する" />
 
