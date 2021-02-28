@@ -49,12 +49,12 @@
             $image = date('YmsHis') . $_FILES['picture']['name'];
     
             // これをファイルディレクトリの中に格納している時用のパスを書く(DBでは文字列として保存)
-            // ファイルではimgタグ様に使える
-            $file = "images/$image";
+            // ファイルではimgタグ様に使える、画像の表示先ファイルとの関係でパスも書いておく
+            $file = "../images/$image";
 
         } else {
             // デフォルトの画像を保存
-            $file = "images/default.png";
+            $file = "../images/default.png";
         }
 
 

@@ -10,7 +10,14 @@
 
    
 
+        // ログインしてるユーザー名
         $login_user = $_SESSION['name'];
+
+        // 表示する画像を取得する
+        $statement = $db->prepare('SELECT picture FROM users WHERE id=?');
+        $statement->execute(array($_SESSION['id']));
+
+        $user_pic = $statement->fetch();
 
         // ページング
         if(isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) {
@@ -57,8 +64,8 @@
         
 
         <div class="bloger-profile">
-            <h1>画像</h1>
-            <h2><?php echo $login_user; ?>さん</h2>
+            
+            <h2><img src="<?php echo $user_pic['picture']; ?>" alt="user_pic" width="100" height="100"/><?php echo $login_user; ?>さん</h2>
             <p>僕はこういうやつです</p>
         </div>
 
