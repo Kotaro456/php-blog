@@ -70,8 +70,17 @@
             $statement->execute(array($name, $email, $hash_password, $file));
 
             if (!empty($_FILES['picture']['name'])) {
+
+                // アップロード先のディレクトリ
+                $upload_dir = '../images';
+
+                // アップロードされたファイルの一時保存場所
+                $tmp_name = $_FILES['picture']['tmp_name'];
+
+                
+
                 // 画像ファイルをimagesディレクトリに移動
-                move_uploaded_file($_FILES['picture']['tmp_name'], '../images/', $image);
+                move_uploaded_file($tmp_name, "$upload_dir/$image");
             }
 
 
