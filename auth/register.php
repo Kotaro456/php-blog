@@ -66,7 +66,7 @@
             $hash_password = password_hash($password, PASSWORD_DEFAULT);
 
             // サニタイズして入れる
-            $statement = $db->prepare('INSERT INTO users SET name=?, email=?, password=?, picture=?, created=now())');
+            $statement = $db->prepare('INSERT INTO users SET name=?, email=?, password=?, picture=?');
             $statement->execute(array($name, $email, $hash_password, $file));
 
             if (!empty($_FILES['picture']['name'])) {
