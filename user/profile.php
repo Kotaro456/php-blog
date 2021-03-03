@@ -53,13 +53,9 @@ if (!empty($_POST)) {
 
 
 
-        //現状：画像ファイルを選択した時は正しく動作する
-        // 画像ファイルを選択せずに更新すると、デフォルト画像が登録されずに日時だけが登録された状態になってしまう
-        // おそらくelseif以降が正しく動作する様にかけていない 
-
-
-        // 新しい画像ファイルが空出なければ、つまり新しい画像ファイルがアップされているなら
-        if (isset($_FILES['new_picture'])) {
+        // 新しい画像ファイルサイズが0出なければif文内のコードを実行する。ファイルサイズが0ということは、画像ファイルが送信されていないことを意味する。
+        // $_FILES['new_picture']['name']==nullとかでは起動しなかったから
+        if ($_FILES['new_picture']['size'] != 0) {
 
             // 画像ファイルの名前を一意のものにする
             $new_picture = date('YmsHis') . $_FILES['new_picture']['name'];
@@ -78,7 +74,7 @@ if (!empty($_POST)) {
             }
 
             // 新しい画像ファイルが空なのである且つデフォルト画像と古い画像が違うのであれば
-        } elseif ($old_picture != $default_picture && empty($_FILES['new_picture'])) {
+        } elseif ($old_picture != $default_picture && $_FILES['new_picture']['size'] == 0) {
 
             // 古い画像の削除
             unlink($old_picture);
@@ -91,6 +87,9 @@ if (!empty($_POST)) {
         // ここでDBに変更内容を挿入する
         $new_user = $db->prepare('UPDATE users SET name=?, picture=?, profile=? WHERE id=? && email=?');
         $new_user->execute(array($new_name, $new_picture, $new_biography, $user['id'], $user['email']));
+
+        // DBに変更内容を挿入し終わったら、再読み込み
+        header('Location: profile.php');
     }
 }
 
