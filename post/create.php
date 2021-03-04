@@ -20,8 +20,8 @@ if (!empty($_POST)) {
     $errorContent = '';
 
     // フォームの値を変数に入れておく htmlspecialcharsでHTMLエンティティ化する
-    $title = htmlspecialchars($_POST['title'], ENT_QUOTES);
-    $content = htmlspecialchars($_POST['content'], ENT_QUOTES);
+    $title = htmlspecialchars($_POST['title'], ENT_NOQUOTES);
+    $content = htmlspecialchars($_POST['content'], ENT_NOQUOTES);
 
 
     // これで前後の空白を削除しておく
