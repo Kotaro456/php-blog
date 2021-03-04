@@ -30,7 +30,11 @@ if (!empty($_POST)) {
     $new_name = htmlspecialchars($_POST['new_name']);
     
     // 自己紹介文が入力されていなければ、デフォルト値を入れる
-    isset($_POST['new_biography']) ? $new_biography = htmlspecialchars($_POST['new_biography']) : $new_biography = 'よろしくお願いします';
+    if(mb_strlen($_POST['new_biography']) != 0){
+        $new_biography = htmlspecialchars($_POST['new_biography']);
+    } else {
+        $new_biography = 'よろしくお願いします';
+    }
 
     // エラー用の変数
     $errorName = '';
@@ -83,6 +87,10 @@ if (!empty($_POST)) {
 
             // DBに保存する画像ファイルをデフォルトの画像にする
             $new_picture = $default_picture;
+            
+        } else {
+
+            $new_picture = $default_picture;
         }
 
 
@@ -130,7 +138,7 @@ if (!empty($_POST)) {
             <?php $errorName != '' && print("<p>$errorName</p>"); ?>
             <input type="text" name="new_name" placeholder="名前を記入してください" value="<?php echo $user['name'] ?>" /><br><br>
 
-            <textarea name="new_biography" placeholder="自己紹介文を入力してください" rows="4" cols="40"><?php $user['profile']  && print($user['profile']); ?></textarea><br><br>
+            <textarea name="new_biography" placeholder="自己紹介文を入力してください" rows="4" cols="40"><?php echo $user['profile']; ?></textarea><br><br>
 
             <input type="submit" value="更新" />
 
