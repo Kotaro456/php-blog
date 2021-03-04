@@ -28,7 +28,9 @@ if (!empty($_POST)) {
 
     // フォームからの値を受け取る
     $new_name = htmlspecialchars($_POST['new_name']);
-    $new_biography = htmlspecialchars($_POST['new_biography']);
+    
+    // 自己紹介文が入力されていなければ、デフォルト値を入れる
+    isset($_POST['new_biography']) ? $new_biography = htmlspecialchars($_POST['new_biography']) : $new_biography = 'よろしくお願いします';
 
     // エラー用の変数
     $errorName = '';
