@@ -1,6 +1,10 @@
 <?php
 require('../dbconnect.php');
 
+/// 引数をhtmlspecialchars()に入れ,echoするメソッド
+require('../function/htmlspecialchars.php');
+
+
 session_start();
 
 if (!isset($_SESSION['id']) && !isset($_SESSION['name'])) {
@@ -32,8 +36,8 @@ if (!empty($_POST)) {
 
     // それぞれ変数に入れておく
     $update_id = $_POST['id'];
-    $new_title = htmlspecialchars($_POST['new_title']);
-    $new_content = htmlspecialchars($_POST['new_content']);
+    $new_title = $_POST['new_title'];
+    $new_content = $_POST['new_content'];
 
         // これで前後の空白を削除しておく
     // 正規表現により文字列の前後の空白を削除することができる
@@ -87,12 +91,12 @@ if (!empty($_POST)) {
         <h1>記事作成</h1>
         <form action="edit.php" method="post">
             <?php $errorTitle != '' ? print("<p>$errorTitle</p>") : '' ; ?>
-            <input type="text" name="new_title" placeholder="記事のタイトル" value="<?php $new_title ? print($new_title) : print($post['title']); ?>" /><br><br>
+            <input type="text" name="new_title" placeholder="記事のタイトル" value="<?php $new_title ? e($new_title) : e($post['title']); ?>" /><br><br>
 
             <?php $errorTitle != '' ? print("<p>$errorContent</p>") : '' ; ?>
-            <textarea type="text" name="new_content" placeholder="記事の内容"><?php $new_content ? print($new_content) : print($post['content']); ?></textarea><br>
+            <textarea type="text" name="new_content" placeholder="記事の内容"><?php $new_content ? e($new_content) : e($post['content']); ?></textarea><br>
 
-            <input type="hidden" name="id" value="<?php echo $post['id']; ?>" />
+            <input type="hidden" name="id" value="<?php e($post['id']); ?>" />
             <input type="submit" value="記事を編集して投稿" />
 
         </form>

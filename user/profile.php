@@ -27,11 +27,11 @@ $user = $statement->fetch();
 if (!empty($_POST)) {
 
     // フォームからの値を受け取る
-    $new_name = htmlspecialchars($_POST['new_name']);
+    $new_name = $_POST['new_name'];
     
     // 自己紹介文が入力されていなければ、デフォルト値を入れる
     if(mb_strlen($_POST['new_biography']) != 0){
-        $new_biography = htmlspecialchars($_POST['new_biography']);
+        $new_biography = $_POST['new_biography'];
     } else {
         $new_biography = 'よろしくお願いします';
     }

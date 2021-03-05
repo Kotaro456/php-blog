@@ -2,6 +2,9 @@
 // DB接続
 require('../dbconnect.php');
 
+// 引数をhtmlspecialchars()に入れ,echoするメソッド
+require('../function/htmlspecialchars.php');
+
 session_start();
 
 if (!isset($_SESSION['id']) && !isset($_SESSION['name'])) {
@@ -20,8 +23,8 @@ if (!empty($_POST)) {
     $errorContent = '';
 
     // フォームの値を変数に入れておく htmlspecialcharsでHTMLエンティティ化する
-    $title = htmlspecialchars($_POST['title'], ENT_NOQUOTES);
-    $content = htmlspecialchars($_POST['content'], ENT_NOQUOTES);
+    $title = $_POST['title'];
+    $content = $_POST['content'];
 
 
     // これで前後の空白を削除しておく
@@ -75,10 +78,10 @@ if (!empty($_POST)) {
         <!-- action=""はフォームの送信先をこのページに指定するという意味 -->
         <form action="create.php" method="post">
             <?php $errorTitle ?  print("<p>$errorTitle</p>") : ''; ?>
-            <input type="text" name="title" placeholder="記事のタイトル" value="<?php echo $title; ?>"/><br><br>
+            <input type="text" name="title" placeholder="記事のタイトル" value="<?php e($title); ?>"/><br><br>
 
             <?php $errorContent ?  print("<p>$errorContent<p>") : ''; ?>
-            <textarea type="text" name="content" placeholder="記事の内容"><?php echo $content; ?></textarea><br>
+            <textarea type="text" name="content" placeholder="記事の内容"><?php e($content); ?></textarea><br>
 
             <input type="submit" value="記事を投稿" />
 
