@@ -1,13 +1,14 @@
 <?php
     require('../dbconnect.php');
 
+    // backLog()使える様にする
+    require('../function/backLogin.php');
+
     // セッション開始
     session_start();
 
-        if (!isset($_SESSION['id']) && !isset($_SESSION['name'])) {
-            header('Location: ../auth/login.php');
-        }
-
+        // ログインしていない時ログイン画面に強制遷移
+        backLog();
    
 
         // ログインしてるユーザー名

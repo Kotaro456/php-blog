@@ -1,21 +1,24 @@
 <!-- 記事を削除する時の処理 -->
-<?php 
-    require('../dbconnect.php');
+<?php
+require('../dbconnect.php');
 
-    session_start();
+session_start();
 
-    if (!isset($_SESSION['id']) && !isset($_SESSION['name'])) {
-        header('Location: ../auth/login.php');
-    }
-
-
-    // URLパラメーターからのidを取得
-    $id = $_REQUEST['id'];
+// backLog()使える様にする
+require('../function/backLogin.php');
 
 
-    // idと一致したものを削除する
-    $delete = $db->prepare('DELETE from posts WHERE id=?');
-    $delete->execute(array($id));
+// ログインしていない時ログイン画面に強制遷移
+backLog();
 
-    header('Location: index.php');
+
+// URLパラメーターからのidを取得
+$id = $_REQUEST['id'];
+
+
+// idと一致したものを削除する
+$delete = $db->prepare('DELETE from posts WHERE id=?');
+$delete->execute(array($id));
+
+header('Location: index.php');
 ?>
